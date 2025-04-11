@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #89f7fe, #66a6ff);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .content-container {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 40px 30px;
+      margin-top: 100px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    h2 {
+      color: #333;
+      font-weight: 600;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      color: #444;
+      font-size: 1rem;
+      margin-bottom: 25px;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+    }
+
+    button {
+      background: linear-gradient(to right, #89f7fe, #66a6ff);
+      border: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 12px;
+      cursor: pointer;
+      color: white;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(102, 166, 255, 0.5);
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #66a6ff, #4a90e2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 166, 255, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+  {% include 'navbar.html' %}
+
+  <div class="content-container">
+    <h2>Fare: ₹{{ fare }}</h2>
+    <div style="text-align: left; margin-bottom: 20px;">
+      <p><strong>Ticket Details:</strong></p>
+      <p>Class: {{ 'First Class' if session['booking_details']['ticket_class'] == 'first' else 'Second Class' }}</p>
+      <p>Type: {{ 'Return Ticket' if session['booking_details']['is_return'] else 'One Way' }}</p>
+    </div>
+    <p>Please scan the QR code and click the button once payment is done.</p>
+
+    {% if qr_code_path %}
+      <div>
+        <img src="{{ url_for('static', filename=qr_code_path.split('static/')[1]) }}" alt="QR Code">
+      </div>
+    {% endif %}
+
+    <form action="{{ url_for('confirm_payment') }}" method="post">
+      <button type="submit">Payment Done</button>
+    </form>
+  </div>
+  
+</body>
+</html>

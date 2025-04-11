@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Register</title>
+
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #fff;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 2.2rem;
+      color: #ffffff;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.25);
+    }
+
+    .flash {
+      margin-bottom: 15px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 500;
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .flash.success {
+      background: linear-gradient(to right, #00b09b, #96c93d);
+      color: white;
+    }
+
+    .flash.error {
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      color: white;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(15px);
+      padding: 35px 45px;
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+    }
+
+    .password-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .password-container input {
+      width: 100%;
+      padding-right: 45px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 14px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: #555;
+      opacity: 0.7;
+    }
+
+    form input {
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 1rem;
+      transition: 0.3s ease;
+    }
+
+    form input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(102, 166, 255, 0.4), 0 0 10px #66a6ff;
+      background-color: #fff;
+    }
+
+    form button {
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s;
+    }
+
+    form button:hover {
+      background: linear-gradient(to right, #0097e6, #0050c9);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 480px) {
+      form {
+        padding: 25px;
+      }
+
+      h2 {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
+
+  <script>
+    function validateForm() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
+
+      if (!emailPattern.test(email)) {
+        alert("Please enter a valid email address.");
+        return false;
+      }
+
+      if (!passwordPattern.test(password)) {
+        alert("Password must be at least 6 characters long, contain one uppercase letter and one special character.");
+        return false;
+      }
+
+      return true;
+    }
+
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      const toggleIcon = document.getElementById("toggleIcon");
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.textContent = "🙈";
+      } else {
+        passwordInput.type = "password";
+        toggleIcon.textContent = "👁";
+      }
+    }
+  </script>
+</head>
+<body>
+  <h2>Register</h2>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST" onsubmit="return validateForm()">
+    <input type="text" name="first_name" placeholder="First Name" required>
+    <input type="text" name="last_name" placeholder="Last Name" required>
+    <input type="email" name="email" placeholder="Email" id="email" required>
+
+    <div class="password-container">
+      <input type="password" name="password" placeholder="Password" id="password" required>
+      <span id="toggleIcon" class="toggle-password" onclick="togglePassword()">👁</span>
+    </div>
+
+    <button type="submit">Register</button>
+    <p style="text-align: center; margin-top: 20px; color: #f0f0f0;">
+      Already have an account? <a href="{{ url_for('login') }}" style="color: #66a6ff; text-decoration: none;">Login here</a>
+    </p>
+  </form>
+</body>
+</html>

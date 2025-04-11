@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Bookings</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    .gradient-header {
+      background: linear-gradient(to right, #89f7fe, #66a6ff);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    table img {
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  {% include 'navbar.html' %}
+
+  <div class="container mt-5">
+    <div class="gradient-header">
+      <h2>Your Bookings</h2>
+    </div>
+
+    {% if bookings %}
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-primary">
+            <tr>
+              <th>PNR</th>
+              <th>Source</th>
+              <th>Destination</th>
+              <th>Fare</th>
+              <th>Class</th>
+              <th>Type</th>
+              <th>Booking Time</th>
+              <th>Status</th>
+              <th>QR Code</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for b in bookings %}
+            <tr>
+              <td>{{ b.pnr }}</td>
+              <td>{{ b.source_name }} ({{ b.source_code }})</td>
+              <td>{{ b.destination_name }} ({{ b.destination_code }})</td>
+              <td>₹{{ b.fare }}</td>
+              <td>{{ 'First' if b.ticket_class == 'first' else 'Second' }}</td>
+              <td>{{ 'Return' if b.is_return else 'One Way' }}</td>
+              <td>{{ b.booking_time }}</td>
+              <td>
+                <span class="badge bg-success">{{ b.status }}</span>
+              </td>
+              <td>
+                {% if b.qr_code_path %}
+                  <img src="{{ url_for('static', filename=b.qr_code_path.split('static/')[-1]) }}" width="80" alt="QR Code">
+                {% else %}
+                  <span class="text-muted">N/A</span>
+                {% endif %}
+              </td>
+              <td>
+                <a class="btn btn-outline-primary btn-sm" href="{{ url_for('ticket', pnr=b.pnr) }}">View Ticket</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="text-muted text-center">You haven’t made any bookings yet.</p>
+    {% endif %}
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BookMyLocal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    .video-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+      color: white;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(6px);
+    }
+
+    .content h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      color: #00c6ff;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+    }
+
+    .content p {
+      font-size: 1.3em;
+      margin-bottom: 40px;
+      color: #f0f0f0;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .cta-button {
+      padding: 14px 28px;
+      font-size: 1.05em;
+      font-weight: 500;
+      background: linear-gradient(to right, #89f7fe, #66a6ff);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 166, 255, 0.4);
+    }
+
+    .cta-button:hover {
+      background: linear-gradient(to right, #66a6ff, #4a90e2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(102, 166, 255, 0.6);
+    }
+
+    .disclaimer {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(6px);
+      color: #f0f0f0;
+      font-size: 0.75em;
+      padding: 8px 16px;
+      border-radius: 12px;
+      z-index: 10;
+      text-align: center;
+      max-width: 90%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 600px) {
+      .content h1 {
+        font-size: 2em;
+      }
+      .content p {
+        font-size: 1em;
+      }
+      .cta-button {
+        padding: 12px 22px;
+        font-size: 1em;
+      }
+      .disclaimer {
+        font-size: 0.65em;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="video-container">
+    <video autoplay muted loop playsinline>
+      <source src="{{ url_for('static', filename='videos/video.mp4') }}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div class="content">
+    <h1>Welcome to BookMyLocal</h1>
+    <p>Your journey starts here</p>
+    <a href="{{ url_for('search') }}" class="cta-button">Book Your Ticket</a>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      BookMyLocal is built for seamless Mumbai local ticket booking by <strong>Ranveer Singh Thakur</strong>, <strong>Rohan Bhoge</strong>, and <strong>Dev Patel</strong> (NMIMS MPSTME, Batch 2021–2027).
+    </p>
+  </div>
+</body>
+</html>

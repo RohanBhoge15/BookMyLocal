@@ -1,0 +1,53 @@
+<nav>
+  <ul>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    {% if session.get('user_id') %}
+      <li><a href="{{ url_for('search') }}">Book Ticket</a></li>
+      <li><a href="{{ url_for('bookings') }}">My Bookings</a></li>
+      <li><a href="{{ url_for('logout') }}">Logout</a></li>
+      <li><strong>Welcome, {{ session['user_name'] }}</strong></li>
+    {% else %}
+      <li><a href="{{ url_for('login') }}">Login</a></li>
+      <li><a href="{{ url_for('register') }}">Register</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
+<style>
+  nav {
+    background: linear-gradient(to right, #89f7fe, #66a6ff);
+    padding: 12px 20px;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: #003366;
+  }
+
+  strong {
+    color: #003366;
+    font-weight: 600;
+  }
+</style>

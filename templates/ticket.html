@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Ticket</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #89f7fe, #66a6ff);
+      color: #333;
+      min-height: 100vh;
+    }
+
+    .content-container {
+      max-width: 600px;
+      background: white;
+      margin: 80px auto 40px;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      text-align: left;
+    }
+
+    .content-container h2 {
+      text-align: center;
+      color: #007bff;
+      margin-bottom: 30px;
+    }
+
+    .content-container p {
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .content-container p strong {
+      color: #444;
+    }
+
+    .content-container img {
+      display: block;
+      margin: 30px auto 0;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 24px;
+      font-size: 1rem;
+      background: linear-gradient(to right, #89f7fe, #66a6ff);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 4px 12px rgba(102, 166, 255, 0.5);
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #66a6ff, #4a90e2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 166, 255, 0.6);
+    }
+
+    @media (max-width: 600px) {
+      .content-container {
+        padding: 25px;
+        margin: 40px 16px;
+      }
+
+      .content-container h2 {
+        font-size: 1.8rem;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  {% include 'navbar.html' %}
+
+  <div class="content-container" id="ticket">
+    <h2>Your Ticket</h2>
+    <p><strong>Full Name:</strong> {{ full_name }}</p>
+    <p><strong>PNR:</strong> {{ ticket.pnr }}</p>
+    <p><strong>Source:</strong> {{ ticket.source_name }} ({{ ticket.source_code }})</p>
+    <p><strong>Destination:</strong> {{ ticket.destination_name }} ({{ ticket.destination_code }})</p>
+    <p><strong>Fare:</strong> ₹{{ ticket.fare }}</p>
+    <p><strong>Class:</strong> {{ 'First Class' if ticket.ticket_class == 'first' else 'Second Class' }}</p>
+    <p><strong>Type:</strong> {{ 'Return Ticket' if ticket.is_return else 'One Way' }}</p>
+    <p><strong>Booking Time:</strong> {{ ticket.booking_time }}</p>
+    <img src="{{ url_for('static', filename=ticket.qr_code_path.split('static/')[-1]) }}" alt="QR Code" width="150">
+  </div>
+
+  <button onclick="downloadPDF()">Download Ticket as PDF</button>
+
+  <script>
+    function downloadPDF() {
+      const element = document.getElementById('ticket');
+      html2pdf().from(element).save('ticket.pdf');
+    }
+  </script>
+</body>
+</html>
